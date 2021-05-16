@@ -56,6 +56,8 @@ int main() {
   List.Print();
   List.InsertAt(12, 4);
   List.Print();
+  List.InsertAt(10, 0);
+  List.Print();
   int key = 6;
   int c = List.get_data(key);
   if(c != NOT_FOUND)
@@ -63,7 +65,7 @@ int main() {
   c = List.Search(key);
   if(c != NOT_FOUND)
     cout << "Key found at " << c << endl;
-  List.RemoveAt(4);
+  List.RemoveAt(2);
   List.Print();
   cout << "List size = " << List.size_ << endl;
 }
@@ -86,12 +88,11 @@ Node::~Node() {
 }
 /*******************************************************************/
 
-/******************* (Node)Function Definitions ********************/
+/******************* (LinkedList)Function Definitions ********************/
 
 // Constructor creates a list with one empty node
 LinkedList::LinkedList() {
-  head_ = new Node(EMPTY); // representing empty node
-  head_->next_ = NULL;
+  head_ = NULL;
   size_ = 0;
 }
 
@@ -101,15 +102,15 @@ void LinkedList::InsertAt(int key, int id) {
     cout << "[X]Index out of bound" << endl;
     return;
   }
-  else if(size_ == 0)
-    head_->data_ = key;
-  else if(id <= size_) { 
-    Node* infant = new Node(key);
+  Node* infant = new Node(key);
+  if(id == 0) {
+    infant->next_ = head_;
+    head_ = infant;
+  }
+  else {
     Node* trav = head_;
     int i = 0;
-    while (i != id - 1) {
-      if(trav->next_ == NULL)
-        break;
+    while ((i != id - 1) && (trav->next_ != NULL)) {
       trav = trav->next_;
       i++;
     }
@@ -127,11 +128,16 @@ void LinkedList::Append(int key) {
 // remove the node located at the index ID
 void LinkedList::RemoveAt(int id) {
   if((id >= size_) || (id < 0)) {
-    cout << "[X]Index out of bound" << endl;
+    cout << "[X]Node to be deleted doesn't exist" << endl;
     return;
   }
   else if(size_ == 0)
-    head_->data_ = 0;
+    head_->data_ = EMPTY;
+  else if(id == 0) {
+    Node* to_be_killed = head_;
+    head_ = head_->next_;
+    delete to_be_killed;
+  }
   else if(id < size_) { 
     Node* trav = head_;
     int i = 0;
