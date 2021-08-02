@@ -2,49 +2,62 @@
 
 using namespace std;
 
-
-// Reprsents a single node of the adjancency list
+// Respresents a single node of the linked list w.r.to a vertex in the adjancency list
 class Node {
   public:
     int id;
     Node * next;
   Node(int id) {
-      id = id;
-      next = NULL;
+      this->id = id;
+      this->next = NULL;
   }
 };
 
 
+
+// Reprsents a single node of the adjancency list
 class Block {
   public:
     Node* node;
   Block() {
-      node = NULL;
+      this->node = NULL;
   }
   void append(int vertex_id);
   void print();
 };
 
-// Represents a Single Graph
-class Graph {
+// Represents a Single DirectedGraph
+class DirectedGraph {
   public:
     int num_edges;
     vector<Block*> vertices;
-  Graph() {
+  DirectedGraph() {
       num_edges = 0; 
   }
   void add_edge(int vertex_id1, int vertex_id2);    // vertex1 --> vertex2
-  bool remove_edge(int vertex_id1, int vertex_id2);    // vertex1 -!-> vertex2
   void print();
 };
 
 
 int main() {
-    Graph G;
-    G.add_edge(1, 4);
+    DirectedGraph G;
+    // Node * ptr = new Node(3);
+    // cout << ptr->id << endl;
+    G.add_edge(1, 2);
+    G.add_edge(2, 3);
     G.add_edge(2, 4);
-    G.add_edge(3, 5);
-    G.add_edge(4, 7);
+    G.add_edge(2, 13);
+    G.add_edge(4, 3);
+    G.add_edge(4, 5);
+    G.add_edge(6, 5);
+    G.add_edge(6, 8);
+    G.add_edge(7, 6);
+    G.add_edge(12, 13);
+    G.add_edge(12, 10);
+    G.add_edge(12, 11);
+    G.add_edge(11, 12);
+    G.add_edge(10, 9);
+    G.add_edge(8, 9);
     G.print();
     return 0;
 }
@@ -62,33 +75,30 @@ void Block::append(int vertex_id) {
 }
 
 void Block::print() {
-    cout << "hel";
-    if(node == NULL) 
-        cout << "(/)";
+    if(node == NULL) { 
+        cout << " -> (/)\n";
+        return;
+    }
     Node * temp = node;
-    while(temp->next != NULL) 
-        cout << " " << temp->id;
+    while(temp->next != NULL) {
+        cout << " -> " << temp->id;
         temp = temp->next;
-    cout << endl;
+    }
+    cout << " -> " << temp->id << endl;
 }
 
-void Graph::add_edge(int vertex_id1, int vertex_id2) {
+void DirectedGraph::add_edge(int vertex_id1, int vertex_id2) {
     int max_vertex_id = max(vertex_id1, vertex_id2);
     for (int i = vertices.size(); i <= max_vertex_id; i++)
         vertices.push_back(new Block());
-    cout << "void \n";
     vertices[vertex_id1]->append(vertex_id2);
     num_edges += 1;
 }
 
 
-bool Graph::remove_edge(int vertex_id1, int vertex_id2) {
-    return true;
-}
-
-void Graph::print() {
+void DirectedGraph::print() {
     for(int i = 0; i < vertices.size(); i++) {
-        cout << "List[" << i << "]:" << endl;
+        cout << "List[" << i << "]:";
         vertices[i]->print();
     }
 }
