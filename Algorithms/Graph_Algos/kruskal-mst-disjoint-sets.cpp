@@ -57,7 +57,6 @@ int main() {
 
 vector<Edge> KruskalMST(Graph &G) {
     vector<Edge> kruskal_mst;
-    vector<int> set_name(G.V);
     vector<int> parent(G.V);    // for disjoint set
     vector<int> rank(G.V);      // for disjoint set
 
